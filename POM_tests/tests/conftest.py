@@ -26,7 +26,7 @@ def login(setup_method):
         login_page.enter_user_login(user_login)
         login_page.enter_password(password)
         login_page.click_on_login_button()
-        time.sleep(3)
+        time.sleep(3.5)
     return _login
 
 @pytest.fixture
@@ -47,5 +47,6 @@ def user_credentials():
         "receptionist": ("receptionist1", "pass1234"),
         "manager": ("manager1", "pass1234"),
         "doctor": ("doctor1", "pass1234"),
+        "doctor_with_wrong_password": ("doctor1", "1234pass"),
         "random": ("Xyz", "qwerty12")
     }

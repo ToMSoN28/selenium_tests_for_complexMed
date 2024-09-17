@@ -78,8 +78,8 @@ class NavbarPage:
     def visible_check_person_menu_button(self) -> bool:
         try:
             button = self.driver.find_element(By.ID, "navbarDropdown")
-            button.click()
-            # time.sleep(0.5)
+            if not self.is_open_preson_menu_button():
+                button.click()
             change_padssword_link = self.driver.find_element(By.ID, "NewPassword")
             logout_link = self.driver.find_element(By.ID, "Logout")
             result = button.is_displayed() and change_padssword_link.is_displayed() and logout_link.is_displayed()
@@ -97,10 +97,14 @@ class NavbarPage:
         return 'show' in button.get_attribute('class')
     
     def click_on_new_password(self) -> None:
+        if not self.is_open_preson_menu_button():
+                self.click_on_person_menu_button()
         change_padssword_link = self.driver.find_element(By.ID, "NewPassword")
         change_padssword_link.click()
         
     def click_on_logout(self) -> None:
+        if not self.is_open_preson_menu_button():
+                self.click_on_person_menu_button()
         logout_link = self.driver.find_element(By.ID, "Logout")
         logout_link.click()
     

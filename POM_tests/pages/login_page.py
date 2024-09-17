@@ -1,9 +1,8 @@
 from selenium import webdriver
-from pages.page import Page
 from selenium.webdriver.common.by import By
 
 
-class LoginPage(Page):
+class LoginPage:
     
     def __init__(self, driver: webdriver, base_url: str) -> None:
         self.driver = driver
@@ -11,11 +10,6 @@ class LoginPage(Page):
         self.endpoint = 'login/'
         pass
     
-    # locators = {
-    #     'user_name': ('ID', 'typeLoginX'),
-    #     'password': ('ID', 'typePasswordX'),
-    #     'login_btn': ('ID', 'loginBtn')
-    # }
     
     def open_login_page(self) -> None:
         self.driver.get(f'{self.base_url}{self.endpoint}')

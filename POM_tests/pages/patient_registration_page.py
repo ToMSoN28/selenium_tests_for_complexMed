@@ -1,12 +1,10 @@
-import time
-from pages.page import Page
+from selenium import webdriver
 from pages.navbar_page import NavbarPage
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
 
-class PatientRegistrationPage(Page, NavbarPage):
+class PatientRegistrationPage(NavbarPage):
     
-    def __init__(self, driver, base_url: str) -> None:
+    def __init__(self, driver: webdriver, base_url: str) -> None:
         # super().__init__(driver, base_url)
         self.driver = driver
         self.base_url = base_url
