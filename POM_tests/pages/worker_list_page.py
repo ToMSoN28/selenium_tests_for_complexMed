@@ -1,4 +1,5 @@
 import time
+from typing import List
 from selenium import webdriver
 from pages.navbar_page import NavbarPage
 from selenium.webdriver.common.by import By
@@ -31,7 +32,7 @@ class WorkerListPage(NavbarPage):
         button = self.driver.find_element(By.ID, 'searchBtn')
         button.click()
         
-    def get_workers_list(self): # zwrotka lista list
+    def get_workers_list(self) -> List[List]: 
         time.sleep(1)
         worker_cards = self.driver.find_elements(By.CSS_SELECTOR, '.worker-desc')
         print(len(worker_cards))
@@ -39,7 +40,6 @@ class WorkerListPage(NavbarPage):
         for card in worker_cards:
             name = card.find_element(By.ID, 'name').text
             username = card.find_element(By.ID, 'username').text
-            # is_manager = len(card.find_elements(By.XPATH, "//div[@id='isManager']//*[name()='svg']"))
             try:
                 manager_svg = card.find_element(By.CSS_SELECTOR, "#isManager svg")
                 is_manager = manager_svg.is_displayed()  # Sprawdza, czy jest widoczny

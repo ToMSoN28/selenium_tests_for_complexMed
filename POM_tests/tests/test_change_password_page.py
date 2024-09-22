@@ -1,5 +1,4 @@
 import time
-
 import pytest
 from pages.change_password_page import ChangePasswordPage
 
