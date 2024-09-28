@@ -1,8 +1,7 @@
-import time
 import pytest
-import json
 from typing import List
 from pages.worker_list_page import WorkerListPage
+
 
 class TestWorkersListPage:
     
@@ -13,7 +12,7 @@ class TestWorkersListPage:
         {"first_name": "Marek", "last_name": "Zieliński", "username": "receptionist1", "is_manager": False, "is_doctor": False, "is_receptionist": True}
     ]
     
-    def convert_workers_infro_to_list(self, list: List[int]) -> List[List]:
+    def convert_workers_into_list(self, list: List[int]) -> List[List]:
         result = []
         for i, worker in enumerate(self.workers_info):
             if i in list:
@@ -33,7 +32,7 @@ class TestWorkersListPage:
     def test_all_warkers_on_page(self, login, setup_method, user_credentials):
         worker_list_page = self.login_and_go_to_worker_list(login, setup_method, user_credentials)
         worker_list = worker_list_page.get_workers_list()
-        expected_tebale = self.convert_workers_infro_to_list([0,1,2,3])
+        expected_tebale = self.convert_workers_into_list([0,1,2,3])
         assert worker_list == expected_tebale
             
     @pytest.mark.parametrize("first_name, last_name, username", [
@@ -58,7 +57,7 @@ class TestWorkersListPage:
         for i, worker in enumerate(self.workers_info):
             if first_name in worker['first_name'] and last_name in worker['last_name'] and username in worker['username']:
                 expected_table.append(i)
-        expected_table = self.convert_workers_infro_to_list(expected_table)
+        expected_table = self.convert_workers_into_list(expected_table)
         assert worker_list == expected_table
         
         

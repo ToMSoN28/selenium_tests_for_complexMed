@@ -8,7 +8,7 @@ class TestLoginPage:
         ("manager", "/dashboard/manager/"),
         ("doctor", "/dashboard/doctor/"),
         ("receptionist", "/patient/search/"),
-        ("doctor_with_wrong_password", "/login/")
+        ("doctor_with_wrong_password", "/login/"),
         ("random", "/login/")
     ])
     def test_role_based_login(self, setup_method, get_current_url, user_credentials, user, expected_endpoint):

@@ -35,7 +35,6 @@ class WorkerListPage(NavbarPage):
     def get_workers_list(self) -> List[List]: 
         time.sleep(1)
         worker_cards = self.driver.find_elements(By.CSS_SELECTOR, '.worker-desc')
-        print(len(worker_cards))
         workers_list = []
         for card in worker_cards:
             name = card.find_element(By.ID, 'name').text
