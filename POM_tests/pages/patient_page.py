@@ -88,6 +88,7 @@ class PatientPage(NavbarPage):
                 visit_info.append(True)
             except NoSuchElementException:
                 visit_info.append(False)
+            result.append(visit_info)
         return result
     
     def click_on_assing_button_on_visit(self, visit_id: str) -> None:
@@ -118,6 +119,62 @@ class PatientPage(NavbarPage):
         button = self.driver.find_element(By.NAME, 'confirmBtn')
         button.clisk()
         
+    def visible_check_upcoming_visits(self) -> bool:
+        try:
+            upcoming_visits = self.driver.find_element(By.CSS_SELECTOR, '.upcoming-visit')
+            return True
+        except NoSuchElementException:
+            return False
         
+    def visible_check_past_visits(self) -> bool:
+        try:
+            past_visits = self.driver.find_element(By.CSS_SELECTOR, '.past-visit')
+            return True
+        except NoSuchElementException:
+            return False
+        
+    def get_upcoming_visits(self) -> List[List]:
+        past_visits = self.driver.find_element(By.CSS_SELECTOR, '.upcoming-visit')
+        result = []
+        for visit in past_visits:
+            visit_info = []
+            visit_info.append(visit.get_attribute("upcoming-visit-id"))
+            for id in ['uVisitName', 'uVisitDate', 'uVisitTime', 'uDoctor']:
+                visit_info.append(visit.find_element(By.ID, id))
+            try:
+                datail_btn = visit.find_element(By.ID, 'uDetailBtn')
+                visit_info.append(True)
+            except NoSuchElementException:
+                visit_info.append(False)
+            result.append(visit_info)
+        return result
+    
+    def get_past_visits(self) -> List[List]:
+        past_visits = self.driver.find_element(By.CSS_SELECTOR, '.past-visit')
+        result = []
+        for visit in past_visits:
+            visit_info = []
+            visit_info.append(visit.get_attribute("past-visit-id"))
+            for id in ['pVisitName', 'pVisitDate', 'pVisitTime', 'pDoctor']:
+                visit_info.append(visit.find_element(By.ID, id))
+            try:
+                datail_btn = visit.find_element(By.ID, 'pDetailBtn')
+                visit_info.append(True)
+            except NoSuchElementException:
+                visit_info.append(False)
+            result.append(visit_info)
+        return result
+        
+    def click_on_detail_in_upcoming_visit(self, visit_id: str) -> None:
+        upcoming_visit_card = self.driver.find_element(By.XPATH, f'//*[@upcoming-visit-id="{visit_id}"]')
+        detail_btn = upcoming_visit_card.find_element(By.ID, 'uDetailBtn')
+        detail_btn.click()
+        
+    def click_on_detail_in_past_visit(self, visit_id: str) -> None:
+        past_visit_card = self.driver.find_element(By.XPATH, f'//*[@past-visit-id="{visit_id}"]')
+        detail_btn = past_visit_card.find_element(By.ID, 'pDetailBtn')
+        detail_btn.click()
+        
+                
         
     
