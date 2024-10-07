@@ -50,3 +50,33 @@ def user_credentials():
         "doctor_with_wrong_password": ("doctor1", "1234pass"),
         "random": ("Xyz", "qwerty12")
     }
+    
+@pytest.fixture(scope="session")
+def patient_list():
+    return [
+        {"first_name": "Anna", "last_name": "Nowak", "birth_date": "October 10, 2002", "pesel": "02301037664", "phone": "600700801"},
+        {"first_name": "Ewa", "last_name": "Zielińska", "birth_date": "August 1, 1980", "pesel": "80080144423", "phone": "600700805"},
+        {"first_name": "Jan", "last_name": "Kowalski", "birth_date": "June 17, 2004", "pesel": "04261771994", "phone": "600700800"},
+        {"first_name": "Joanna", "last_name": "Jankowska", "birth_date": "May 12, 1953", "pesel": "53051268628", "phone": "600700809"},
+        {"first_name": "Katarzyna", "last_name": "Wójcik", "birth_date": "January 15, 1994", "pesel": "94111582546", "phone": "600700803"},
+        {"first_name": "Magdalena", "last_name": "Woźniak", "birth_date": "July 7, 1971", "pesel": "71070704260", "phone": "600700807"},
+        {"first_name": "Marek", "last_name": "Kowalczyk", "birth_date": "July 30, 1992", "pesel": "92073093870", "phone": "600700804"},
+        {"first_name": "Paweł", "last_name": "Kozłowski", "birth_date": "February 15, 1957", "pesel": "57021597837", "phone": "600700808"},
+        {"first_name": "Piotr", "last_name": "Wiśniewski", "birth_date": "July 16, 1997", "pesel": "97071654694", "phone": "600700802"},
+        {"first_name": "Tomasz", "last_name": "Szymański", "birth_date": "January 6, 1979", "pesel": "79110688653", "phone": "600700806"}
+    ]
+    
+@pytest.fixture(scope="session")
+def visit_name_list():
+    return [
+        "Konsultacja ortopedyczna",
+        "Leczenie urazów",
+        "Masaż leczniczy pleców",
+        "Diagnostyka bólu stawów",
+        "Kontrola po operacji",
+        "Badanie USG",
+        "Iniekcje dostawowe",
+        "Diagnostyka złamań",
+        "Ocena postawy ciała",
+        "Rehabilitacja"
+    ]

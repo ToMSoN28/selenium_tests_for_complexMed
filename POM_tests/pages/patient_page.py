@@ -10,7 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 class PatientPage(NavbarPage):
     
     def __init__(self, driver: webdriver, base_url: str) -> None:
-        webdriver: self.driver = driver
+        self.driver = driver
         self.base_url = base_url
         self.endpoint = 'patient/id/'
         
@@ -27,6 +27,10 @@ class PatientPage(NavbarPage):
             return True
         except NoSuchElementException:
             return False
+        
+    def get_available_visit_names(self) -> List[str]:   # option.text
+        visit_name_dropdown = Select(self.driver.find_element(By.ID, 'selectName'))
+        return visit_name_dropdown.options
         
     def select_visit_name_by_visit_name(self, visit_name: str) -> None:
         visit_name_dropdown = Select(self.driver.find_element(By.ID, 'selectName'))
@@ -93,6 +97,7 @@ class PatientPage(NavbarPage):
     
     def click_on_assing_button_on_visit(self, visit_id: str) -> None:
         visit = self.driver.find_elements(By.CSS_SELECTOR, f'div[data-visit-id="{visit_id}"]')
+        self.driver.execute_script("arguments[0].scrollIntoView();", visit)
         assign_btn = visit.find_element(By.ID, 'assignBtn')
         assign_btn.click()
 
@@ -167,11 +172,13 @@ class PatientPage(NavbarPage):
         
     def click_on_detail_in_upcoming_visit(self, visit_id: str) -> None:
         upcoming_visit_card = self.driver.find_element(By.XPATH, f'//*[@upcoming-visit-id="{visit_id}"]')
+        self.driver.execute_script("arguments[0].scrollIntoView();", upcoming_visit_card)
         detail_btn = upcoming_visit_card.find_element(By.ID, 'uDetailBtn')
         detail_btn.click()
         
     def click_on_detail_in_past_visit(self, visit_id: str) -> None:
         past_visit_card = self.driver.find_element(By.XPATH, f'//*[@past-visit-id="{visit_id}"]')
+        self.driver.execute_script("arguments[0].scrollIntoView();", past_visit_card)
         detail_btn = past_visit_card.find_element(By.ID, 'pDetailBtn')
         detail_btn.click()
         
