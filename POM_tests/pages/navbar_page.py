@@ -6,7 +6,7 @@ from selenium import webdriver
 class NavbarPage:
     
     def __init__(self, driver: webdriver) -> None:
-        self.driver = driver
+        self.driver: webdriver = driver
         pass
     
     def visible_check_daily_visits(self) -> bool:

@@ -39,15 +39,14 @@ class SearchPatientPage(NavbarPage):
         patient_list = []
         for card in patient_cards:
             patient = []
+            patient.append(card.get_attribute('data-patient-id'))
             for id in ['name', 'birthDate', 'pesel', 'phone']:
                 patient.append(card.find_element(By.ID, id).text)
             patient_list.append(patient)
         return patient_list
 
-    def click_on_patient_profile(self, full_name: str) -> None:
-        patient_cards = self.driver.find_elements(By.CSS_SELECTOR, 'patient-info')
-        for card in patient_cards:
-            if card.find_element(By.ID, 'name').text == full_name:
-                profile_btn = card.find_element(By.ID, 'profileBtn')
-                profile_btn.click()
-                return
+    def click_on_patient_profile(self, patient_id: str) -> None:
+        patient_card = self.driver.find_element(By.XPATH, f'//*[@data-patient-id="{patient_id}"]')
+        self.driver.execute_script("arguments[0].scrollIntoView();", patient_card)
+        profile_btn = patient_card.find_element(By.ID, 'profileBtn')
+        profile_btn.click()
