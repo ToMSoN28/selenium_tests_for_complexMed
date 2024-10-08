@@ -80,3 +80,10 @@ def visit_name_list():
         "Ocena postawy ciała",
         "Rehabilitacja"
     ]
+    
+@pytest.fixture(scope="session")
+def doctors_list():
+    return [
+        "Adam Wiśniewski",
+        "Ewa Szymańska"
+    ]

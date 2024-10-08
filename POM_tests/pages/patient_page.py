@@ -28,17 +28,25 @@ class PatientPage(NavbarPage):
         except NoSuchElementException:
             return False
         
-    def get_available_visit_names(self) -> List[str]:   # option.text
+    def get_available_visit_names(self) -> Select.options:   # option.text
         visit_name_dropdown = Select(self.driver.find_element(By.ID, 'selectName'))
         return visit_name_dropdown.options
         
     def select_visit_name_by_visit_name(self, visit_name: str) -> None:
         visit_name_dropdown = Select(self.driver.find_element(By.ID, 'selectName'))
         visit_name_dropdown.select_by_visible_text(visit_name)
+        
+    def get_available_doctors(self) -> Select.options:
+        doctor_fullname_dropdown = Select(self.driver.find_element(By.ID, 'selectDoctor'))
+        return doctor_fullname_dropdown.options
     
     def select_doctor_by_fullname(self, doctor_fullname: str) -> None:
         doctor_fullname_dropdown = Select(self.driver.find_element(By.ID, 'selectDoctor'))
         doctor_fullname_dropdown.select_by_visible_text(doctor_fullname)
+    
+    def get_available_weeks(self) -> Select.options:
+        week_dropdown = Select(self.driver.find_element(By.ID, 'selectWeek'))
+        return week_dropdown.options
         
     def select_week_by_visible_text(self, week_text: str) -> None:
         week_dropdown = Select(self.driver.find_element(By.ID, 'selectWeek'))
@@ -64,7 +72,7 @@ class PatientPage(NavbarPage):
         return result
     
     def click_on_day_from_days_nav_segment(self, day_id:str) -> None:
-        day_link = self.find_element(By.ID, day_id)
+        day_link = self.driver.find_element(By.ID, day_id)
         day_link.click()
         
     def visible_check_dayli_visits_section(self, day_id:str) -> bool:
