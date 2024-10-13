@@ -86,15 +86,15 @@ class PatientPage(NavbarPage):
             return False
         
     def get_visit_form_visit_section(self, day_id: str) -> List[List]:
-        day_id.replace('link', 'item')
+        day_id = day_id.replace('link', 'item')
         day_section = self.driver.find_element(By.ID, day_id)
-        day_visits = day_section.find_elements(By.ID, 'availableVisit')
+        day_visits = day_section.find_elements(By.CSS_SELECTOR, '.available-visit')
         result = []
         for visit in day_visits:
             visit_info = []
             visit_info.append(visit.get_attribute("data-visit-id"))
             for id in ['startTime', 'endTime', 'visitName', 'visitDate', 'doctor']:
-                visit_info.append(visit.find_element(By.ID, id))
+                visit_info.append(visit.find_element(By.ID, id).text)
             try:
                 assign_btn = visit.find_element(By.ID, 'assignBtn')
                 visit_info.append(True)
@@ -104,33 +104,39 @@ class PatientPage(NavbarPage):
         return result
     
     def click_on_assing_button_on_visit(self, visit_id: str) -> None:
-        visit = self.driver.find_elements(By.CSS_SELECTOR, f'div[data-visit-id="{visit_id}"]')
-        self.driver.execute_script("arguments[0].scrollIntoView();", visit)
+        visit = self.driver.find_element(By.CSS_SELECTOR, f'div[data-visit-id="{visit_id}"]')
+        # self.driver.execute_script("arguments[0].scrollIntoView();", visit)
         assign_btn = visit.find_element(By.ID, 'assignBtn')
         assign_btn.click()
 
     
     def visible_check_assign_confirmation(self, visit_id: str) -> bool:
-        visit_id.replace('visit', 'confirm')
+        visit_id = visit_id.replace('visit', 'confirm')
         try:
-            confirmation = self.driver.find_elements(By.CSS_SELECTOR, f'div[data-visit-id="confirm{visit_id}"]')
-            return True
+            confirmation = self.driver.find_element(By.CSS_SELECTOR, f'div[data-visit-id="{visit_id}"]')
+            if confirmation.is_displayed():
+                return True
+            return False
         except NoSuchElementException:
             return False
         
     def get_text_on_confirmation(self, visit_id: str) -> str:
-        visit_id.replace('visit', 'confirm')
-        confirmation = self.driver.find_elements(By.CSS_SELECTOR, f'div[data-visit-id="confirm{visit_id}"]')
+        visit_id = visit_id.replace('visit', 'confirm')
+        confirmation = self.driver.find_element(By.CSS_SELECTOR, f'div[data-visit-id="{visit_id}"]')
         confirmation_text = confirmation.find_element(By.CLASS_NAME, 'modal-body').text
         return confirmation_text
     
-    def click_on_close_confirmation_button(self) -> None:
-        button = self.driver.find_element(By.CSS_SELECTOR, 'button[data-bs-dismiss="modal"]')
+    def click_on_close_confirmation_button(self, visit_id: str) -> None:
+        visit_id = visit_id.replace('visit', 'confirm')
+        confirmation = self.driver.find_element(By.CSS_SELECTOR, f'div[data-visit-id="{visit_id}"]')
+        button = confirmation.find_element(By.ID, 'close')
         button.click()
         
-    def click_on_assign_confirmatino_button(self) -> None:
-        button = self.driver.find_element(By.NAME, 'confirmBtn')
-        button.clisk()
+    def click_on_assign_confirmatino_button(self, visit_id: str) -> None:
+        visit_id = visit_id.replace('visit', 'confirm')
+        confirmation = self.driver.find_element(By.CSS_SELECTOR, f'div[data-visit-id="{visit_id}"]')
+        button = confirmation.find_element(By.ID, 'confirmBtn')
+        button.click()
         
     def visible_check_upcoming_visits(self) -> bool:
         try:
@@ -147,13 +153,13 @@ class PatientPage(NavbarPage):
             return False
         
     def get_upcoming_visits(self) -> List[List]:
-        past_visits = self.driver.find_element(By.CSS_SELECTOR, '.upcoming-visit')
+        past_visits = self.driver.find_elements(By.CSS_SELECTOR, '.upcoming-visit')
         result = []
         for visit in past_visits:
             visit_info = []
             visit_info.append(visit.get_attribute("upcoming-visit-id"))
             for id in ['uVisitName', 'uVisitDate', 'uVisitTime', 'uDoctor']:
-                visit_info.append(visit.find_element(By.ID, id))
+                visit_info.append(visit.find_element(By.ID, id).text)
             try:
                 datail_btn = visit.find_element(By.ID, 'uDetailBtn')
                 visit_info.append(True)
@@ -163,13 +169,13 @@ class PatientPage(NavbarPage):
         return result
     
     def get_past_visits(self) -> List[List]:
-        past_visits = self.driver.find_element(By.CSS_SELECTOR, '.past-visit')
+        past_visits = self.driver.find_elements(By.CSS_SELECTOR, '.past-visit')
         result = []
         for visit in past_visits:
             visit_info = []
             visit_info.append(visit.get_attribute("past-visit-id"))
             for id in ['pVisitName', 'pVisitDate', 'pVisitTime', 'pDoctor']:
-                visit_info.append(visit.find_element(By.ID, id))
+                visit_info.append(visit.find_element(By.ID, id).text)
             try:
                 datail_btn = visit.find_element(By.ID, 'pDetailBtn')
                 visit_info.append(True)
