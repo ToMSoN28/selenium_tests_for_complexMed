@@ -119,7 +119,7 @@ class TestPatientPage:
             if visit_name_num is not None:
                 assert visit_name_list[visit_name_num] == visit[3]
             if doctor_num is not None:
-                assert f'Dr. {doctors_list[doctor_num]}' == visit[5]
+                assert f'Doc. {doctors_list[doctor_num]}' == visit[5]
             assert self.is_workday_in_week(visit[4], week_num)        
         
     def test_fail_assigning_confirmation(self, login, setup_method, user_credentials, patient_list):
@@ -167,9 +167,9 @@ class TestPatientPage:
         past_num = past_visit[0].replace("visit",'')
         assert f'/visit/{past_num}/' == get_current_url(patient_page.driver)
         patient_page.driver.back()
-        upcoming = patient_page.get_past_visits()
+        upcoming = patient_page.get_upcoming_visits()
         upcoming_visit = random.choice(upcoming)
-        patient_page.click_on_detail_in_past_visit(past_visit[0])
+        patient_page.click_on_detail_in_upcoming_visit(upcoming_visit[0])
         upcoming_num = upcoming_visit[0].replace("visit",'')
         assert f'/visit/{upcoming_num}/' == get_current_url(patient_page.driver)
         
@@ -180,8 +180,11 @@ class TestPatientPage:
         available_visits = patient_page.get_visit_form_visit_section('link-1')
         visit= available_visits[0]
         patient_page.click_on_assing_button_on_visit(visit[0])
+        time.sleep(0.5)
         patient_page.click_on_assign_confirmatino_button(visit[0])
+        time.sleep(0.5)
         patient_page.click_on_search_button()
+        time.sleep(0.5)
         available_visits = patient_page.get_visit_form_visit_section('link-1')
         assert visit not in available_visits
         upcoming = patient_page.get_upcoming_visits()
