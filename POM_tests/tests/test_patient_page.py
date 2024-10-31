@@ -37,12 +37,14 @@ class TestPatientPage:
         end_datetime = datetime.combine(date.date(), datetime.strptime(end_time_str.strip(), '%H:%M').time())
         return start_datetime, end_datetime
     
-    def login_and_go_to_patien_page_by_patient_number(self, login, setup_method, user_credentials, patient_list, patient_number: int) -> PatientPage:
-        user = 'receptionist'
+    def login_and_go_to_patien_page_by_patient_number(self, login, setup_method, user_credentials, patient_list, patient_number: int, user = 'receptionist') -> PatientPage:
+        # user = 'receptionist'
         user_l, user_p = user_credentials[user]
         login(user_l, user_p)
         driver, base_url = setup_method
         search_patient_page = SearchPatientPage(driver, base_url)
+        search_patient_page.click_on_search_patient()
+        time.sleep(0.5)
         search_patient_page.click_on_search_button()
         patient_info_list = search_patient_page.get_patient_list()
         patient_id = None
@@ -53,24 +55,33 @@ class TestPatientPage:
         patient_page = PatientPage(driver, base_url)
         return patient_page
     
-    def test_visible_search_visit_module(self, login, setup_method, user_credentials, patient_list):
-        patient_page = self.login_and_go_to_patien_page_by_patient_number(login, setup_method, user_credentials, patient_list, 0)
-        assert patient_page.visible_check_search_available_visit_panel()
+    @pytest.mark.parametrize("user, expected", [
+        ('doctor', False),
+        ('manager', True),
+        ('receptionist', True)
+    ])
+    def test_visible_search_visit_module(self, login, setup_method, user_credentials, patient_list, user: str, expected: bool):
+        patient_page = self.login_and_go_to_patien_page_by_patient_number(login, setup_method, user_credentials, patient_list, 0, user)
+        time.sleep(0.5)
+        assert patient_page.visible_check_search_available_visit_panel() == expected
         
     def test_choose_visit_name_in_search_visit_module(self, login, setup_method, user_credentials, patient_list, visit_name_list):
         patient_page = self.login_and_go_to_patien_page_by_patient_number(login, setup_method, user_credentials, patient_list, 0)
+        time.sleep(0.5)
         visit_name_options = patient_page.get_available_visit_names()
         for visit_name in visit_name_options[1:]:
             assert visit_name.text in visit_name_list
         
     def test_choose_doctor_in_search_visit_module(self, login, setup_method, user_credentials, patient_list, doctors_list):
         patient_page = self.login_and_go_to_patien_page_by_patient_number(login, setup_method, user_credentials, patient_list, 0)
+        time.sleep(0.5)
         doctors = patient_page.get_available_doctors()
         for doctor in doctors[1:]:
             assert doctor.text in doctors_list
             
     def test_choose_weeks_in_search_visit_module(self, login, setup_method, user_credentials, patient_list):
         patient_page = self.login_and_go_to_patien_page_by_patient_number(login, setup_method, user_credentials, patient_list, 0)
+        time.sleep(0.5)
         weeks = patient_page.get_available_weeks()
         for week in weeks[1:]:
             assert week.text in self.weeks
@@ -147,10 +158,12 @@ class TestPatientPage:
         past = patient_page.get_past_visits()
         print(past)
         past_datatime = []
+        today = datetime.today()
         for v in past:
             past_datatime.append(self.create_time_interval(v[2], v[3]))
         for i in range(len(past)-1):
             assert past_datatime[i][0] > past_datatime[i+1][0]
+            assert today > past_datatime[i][0]
         upcoming = patient_page.get_upcoming_visits()
         print(upcoming)
         upcoming_datatime = []
@@ -158,6 +171,7 @@ class TestPatientPage:
             upcoming_datatime.append(self.create_time_interval(v[2], v[3]))
         for i in range(len(upcoming)-1):
             assert upcoming_datatime[i][0] < upcoming_datatime[i+1][0]
+            assert today < upcoming_datatime[i][0]
             
     def test_redirection_aftec_click_on_detal_in_upcoming_or_past_visit(self, login, setup_method, user_credentials, patient_list, get_current_url):
         patient_page = self.login_and_go_to_patien_page_by_patient_number(login, setup_method, user_credentials, patient_list, 5)
@@ -183,8 +197,8 @@ class TestPatientPage:
         time.sleep(0.5)
         patient_page.click_on_assign_confirmatino_button(visit[0])
         time.sleep(0.5)
+        patient_page.select_week_by_visible_text(self.weeks[1])
         patient_page.click_on_search_button()
-        time.sleep(0.5)
         available_visits = patient_page.get_visit_form_visit_section('link-1')
         assert visit not in available_visits
         upcoming = patient_page.get_upcoming_visits()
