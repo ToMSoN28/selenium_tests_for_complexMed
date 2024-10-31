@@ -113,7 +113,15 @@ class VisitPage(NavbarPage):
         yes_btn = confirmation.find_element(By.ID, 'yesEdit')
         yes_btn.click()
     
+    def visible_check_visit_description(self) -> bool:
+        try:
+            desc_section = self.driver.find_element(By.ID, 'desc')
+            return True
+        except NoSuchElementException:
+            return False
         
-        
-        
+    def get_description_text(self) -> str:
+        return self.driver.find_element(By.ID, 'DescriptionText').text
     
+    def get_recommendation_text(self) -> str:
+        return self.driver.find_element(By.ID, 'RecommendationText').text

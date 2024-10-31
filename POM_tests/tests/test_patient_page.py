@@ -173,7 +173,7 @@ class TestPatientPage:
             assert upcoming_datatime[i][0] < upcoming_datatime[i+1][0]
             assert today < upcoming_datatime[i][0]
             
-    def test_redirection_aftec_click_on_detal_in_upcoming_or_past_visit(self, login, setup_method, user_credentials, patient_list, get_current_url):
+    def test_redirection_after_click_on_detal_in_upcoming_or_past_visit(self, login, setup_method, user_credentials, patient_list, get_current_url):
         patient_page = self.login_and_go_to_patien_page_by_patient_number(login, setup_method, user_credentials, patient_list, 5)
         past = patient_page.get_past_visits()
         past_visit = random.choice(past)
