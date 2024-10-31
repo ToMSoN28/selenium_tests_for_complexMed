@@ -23,3 +23,5 @@ class TestPatientRegistrationPage:
         patient_registration_page = self.fill_and_send_adding_patirnt_form(login, setup_method, user_credentials, user, 'Mark', 'Kuban', '04261771994', '123234345')
         
         assert f'Patient with pesel {'04261771994'} already exist' == patient_registration_page.check_error_message()
+        
+    # dodać poprawnie   
