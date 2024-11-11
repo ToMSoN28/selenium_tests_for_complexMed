@@ -3,7 +3,7 @@ import pytest
 from pages.login_page import LoginPage
 from pages.navbar_page import NavbarPage
 
-class TestUC01:
+class TestUC01: #Zalogowanie/Wylogowanie
         
     @pytest.mark.parametrize("user, expected_endpoint", [
         ("manager", "/dashboard/manager/"),

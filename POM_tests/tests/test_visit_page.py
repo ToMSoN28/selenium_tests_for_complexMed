@@ -1,3 +1,4 @@
+import random
 import time
 import pytest
 # import random
@@ -43,8 +44,12 @@ class TestVisitPage:
         ("doctor", True) 
     ])
     def test_visible_desc_of_visits(self, login, setup_method, user_credentials, patient_list, user, visible):
+        patient_number = random.randint(0,9)
         visit_page = self.login_fun(login, setup_method, user_credentials, user)
-        self.go_to_past_visit(visit_page.driver, patient_list, 3, 0)
-        assert visit_page.visible_check_visit_description() == visible
+        past_len = self.go_to_past_visit(visit_page.driver, patient_list, patient_number, 0)
+        for past_num in range(1,past_len):
+            assert visit_page.visible_check_visit_description() == visible
+            visit_page.driver.back()
+            self.go_to_past_visit(visit_page.driver, patient_list, patient_number, past_num)
         
         

@@ -186,13 +186,29 @@ class PatientPage(NavbarPage):
         
     def click_on_detail_in_upcoming_visit(self, visit_id: str) -> None:
         upcoming_visit_card = self.driver.find_element(By.XPATH, f'//*[@upcoming-visit-id="{visit_id}"]')
-        self.driver.execute_script("arguments[0].scrollIntoView();", upcoming_visit_card)
+        is_in_viewport = self.driver.execute_script(
+            "const rect = arguments[0].getBoundingClientRect();"
+            "return (rect.top >= 0 && rect.left >= 0 && "
+            "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && "
+            "rect.right <= (window.innerWidth || document.documentElement.clientWidth));", 
+            upcoming_visit_card
+        )
+        if not is_in_viewport:
+            self.driver.execute_script("arguments[0].scrollIntoView();", upcoming_visit_card)
         detail_btn = upcoming_visit_card.find_element(By.ID, 'uDetailBtn')
         detail_btn.click()
         
     def click_on_detail_in_past_visit(self, visit_id: str) -> None:
         past_visit_card = self.driver.find_element(By.XPATH, f'//*[@past-visit-id="{visit_id}"]')
-        self.driver.execute_script("arguments[0].scrollIntoView();", past_visit_card)
+        is_in_viewport = self.driver.execute_script(
+            "const rect = arguments[0].getBoundingClientRect();"
+            "return (rect.top >= 0 && rect.left >= 0 && "
+            "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && "
+            "rect.right <= (window.innerWidth || document.documentElement.clientWidth));", 
+            past_visit_card
+        )
+        if not is_in_viewport:
+            self.driver.execute_script("arguments[0].scrollIntoView();", past_visit_card)
         detail_btn = past_visit_card.find_element(By.ID, 'pDetailBtn')
         detail_btn.click()
         

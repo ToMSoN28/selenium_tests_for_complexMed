@@ -16,7 +16,7 @@ class VisitPage(NavbarPage):
         visit_card = self.driver.find_element(By.ID, 'visitInfo')
         basic_info = []
         for id in ['visitName', 'visitTime', 'doctor', 'patient', 'room', 'price']:
-            basic_info.append(visit_card.find_element(By.ID, id))
+            basic_info.append(visit_card.find_element(By.ID, id).text)
         return basic_info
     
     def visible_check_cancel_button(self) -> bool:
