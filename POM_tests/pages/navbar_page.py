@@ -87,6 +87,10 @@ class NavbarPage:
             return result
         except NoSuchElementException:
             return False
+        
+    def get_worker_name(self) -> str:
+        button = self.driver.find_element(By.ID, "navbarDropdown")
+        return button.text
     
     def click_on_person_menu_button(self) -> None:
         button = self.driver.find_element(By.ID, "navbarDropdown")

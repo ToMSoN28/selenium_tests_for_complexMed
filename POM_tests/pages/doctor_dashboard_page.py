@@ -1,10 +1,10 @@
-from typing import List
+from typing import List, Literal
 from selenium import webdriver
 from pages.navbar_page import NavbarPage
 from datetime import datetime
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class DoctorDashboardPage(NavbarPage):
@@ -41,7 +41,7 @@ class DoctorDashboardPage(NavbarPage):
         actual_visit = self.driver.find_element(By.ID, 'actualVisit')
         info_party = actual_visit.find_element(By.CSS_SELECTOR, '.card-text')
         info = []
-        for id in range([]):
+        for id in ['aName','aTime','aRoom','aPatient']:
             info.append(info_party.find_element(By.ID, id).text)
         info.append(info_party.find_element(By.ID, 'aDetail').is_displayed())
         return info
@@ -70,8 +70,8 @@ class DoctorDashboardPage(NavbarPage):
         upcoming = self.driver.find_elements(By.CSS_SELECTOR, '.upcoming')
         result = []
         for visit in upcoming:
-            tmp = [visit.get_attibute('id')]
-            for id in range(['uStartTime','uEndTime','uVisitName','uPatient']):
+            tmp = [visit.get_attribute('id')]
+            for id in ['uStartTime','uEndTime','uVisitName','uPatient']:
                 tmp.append(visit.find_element(By.ID, id).text)
             result.append(tmp)
         return result
@@ -81,12 +81,14 @@ class DoctorDashboardPage(NavbarPage):
         result = []
         for visit in passed:
             tmp = [visit.get_attibute('id')]
-            for id in range(['pStartTime','pEndTime','pVisitName','pPatient']):
+            for id in ['pStartTime','pEndTime','pVisitName','pPatient']:
                 tmp.append(visit.find_element(By.ID, id).text)
             result.append(tmp)
         return result
-        
-        
-        
+         
+    def click_on_detail_button(self, visit_id: str, upPas: Literal['p', 'u']) -> None:
+        visit_card = self.driver.find_element(By.ID, visit_id)
+        detail_btn = visit_card.find_element(By.ID, f'{upPas}Detail')
+        ActionChains(self.driver).move_to_element(detail_btn).click().perform()    
         
     
