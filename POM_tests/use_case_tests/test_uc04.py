@@ -4,7 +4,7 @@ from pages.search_patient_page import SearchPatientPage
 
 class TestUC04: #Wyświetlenie profilu pacjenta
         
-    def login_and_go_to_search_patient(self, login, setup_method, user_credentials, user: str):
+    def login_and_go_to_search_patient(self, login, setup_method, user_credentials, user: str) -> SearchPatientPage:
         user_l, user_p = user_credentials[user]
         login(user_l, user_p)
         driver, base_url = setup_method

@@ -62,8 +62,8 @@ class TestUC09:
                 assert visit[3] == visit_info[0]
                 start, end = self.transform_basic_date(visit_info[1])
                 assert start < last_refresh
-                datetime_check.append(start)
                 datetime_check.append(end)
+                datetime_check.append(start)
                 assert doctor_dashboard_page.get_worker_name() == visit_info[2].replace('Doctor: ', '')
                 doctor_dashboard_page.driver.back()
             for i in range(len(datetime_check)-1):
