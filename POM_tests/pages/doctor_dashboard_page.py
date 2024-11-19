@@ -80,7 +80,7 @@ class DoctorDashboardPage(NavbarPage):
         passed = self.driver.find_elements(By.CSS_SELECTOR, '.passed')
         result = []
         for visit in passed:
-            tmp = [visit.get_attibute('id')]
+            tmp = [visit.get_attribute('id')]
             for id in ['pStartTime','pEndTime','pVisitName','pPatient']:
                 tmp.append(visit.find_element(By.ID, id).text)
             result.append(tmp)

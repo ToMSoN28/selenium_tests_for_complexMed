@@ -50,16 +50,4 @@ class SearchPatientPage(NavbarPage):
     def click_on_patient_profile(self, patient_id: str) -> None:
         patient_card = self.driver.find_element(By.XPATH, f'//*[@data-patient-id="{patient_id}"]')
         profile_btn = patient_card.find_element(By.ID, 'profileBtn')
-        # is_in_viewport = self.driver.execute_script(
-        #     "const rect = arguments[0].getBoundingClientRect();"
-        #     "return (rect.top >= 0 && rect.left >= 0 && "
-        #     "rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && "
-        #     "rect.right <= (window.innerWidth || document.documentElement.clientWidth));", 
-        #     profile_btn
-        # )
-        # print(is_in_viewport)
-        # if not is_in_viewport:
-        #     self.driver.execute_script("arguments[0].scrollIntoView();", profile_btn)
-        #     self.driver.implicitly_wait(1)
-        # profile_btn.click()
         ActionChains(self.driver).move_to_element(profile_btn).click().perform()

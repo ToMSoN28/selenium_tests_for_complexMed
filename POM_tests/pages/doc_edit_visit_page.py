@@ -11,7 +11,7 @@ class DocEditVisitPage(NavbarPage):
     def __init__(self, driver: webdriver, base_url: str) -> None:
         self.driver = driver
         self.base_url = base_url
-        self.endpoint = 'visit/id/doctor/edit'
+        self.endpoint = '/visit/id/doctor/edit'
         
     def get_basic_visit_info(self) -> List[str]:
         visit_card = self.driver.find_element(By.ID, 'visitInfo')
@@ -23,8 +23,8 @@ class DocEditVisitPage(NavbarPage):
     def get_description_text(self) -> str:
         return self.driver.find_element(By.ID, 'descArea').text
     
-    def get_recomendation_text(self) -> str:
-        return self.driver.find_element(By.ID, 'descArea').text
+    def get_recommendation_text(self) -> str:
+        return self.driver.find_element(By.ID, 'recoArea').text
     
     def insert_description_text(self, test: str) -> None:
         area = self.driver.find_element(By.ID, 'descArea')
@@ -32,7 +32,7 @@ class DocEditVisitPage(NavbarPage):
         area.send_keys(test)
     
     def insert_recomendation_text(self, test: str) -> None:
-        area = self.driver.find_element(By.ID, 'descArea')
+        area = self.driver.find_element(By.ID, 'recoArea')
         area.clear()
         area.send_keys(test)
         
@@ -56,35 +56,27 @@ class DocEditVisitPage(NavbarPage):
         self.driver.find_element(By.CSS_SELECTOR, '.sAe').click()
         
     def visible_check_save_and_continue_confirmation(self) -> bool:
-        try:
-            self.driver.find_element(By.ID, 'save_contiue')
-            return True
-        except NoSuchElementException:
-            return False
+        confirm = self.driver.find_element(By.ID, 'save_continue')
+        return confirm.is_displayed()
+
         
     def visible_check_save_and_exit_confirmation(self) -> bool:
-        try:
-            self.driver.find_element(By.ID, 'save_exit')
-            return True
-        except NoSuchElementException:
-            return False
+        confirm = self.driver.find_element(By.ID, 'save_exit')
+        return confirm.is_displayed()
+
         
     def click_on_close_on_save_and_continue_confirmation(self) -> None:
-        confirmation = self.driver.find_element(By.ID, 'save_contiue')
-        confirmation.find_element(By.CSS_SELECTOR, '.close').click()
-        
-    def click_on_close_on_save_and_continue_confirmation(self) -> None:
-        confirmation = self.driver.find_element(By.ID, 'save_contiue')
-        confirmation.find_element(By.CSS_SELECTOR, '.close').click()
+        confirmation = self.driver.find_element(By.ID, 'save_continue')
+        confirmation.find_element(By.ID, 'scClose').click()
     
     def click_on_ok_on_save_and_continue_confirmation(self) -> None:
-        confirmation = self.driver.find_element(By.ID, 'save_contiue')
-        confirmation.find_element(By.CSS_SELECTOR, '.accept').click()
+        confirmation = self.driver.find_element(By.ID, 'save_continue')
+        confirmation.find_element(By.ID, 'scAccept').click()
         
     def click_on_close_on_save_and_exit_confirmation(self) -> None:
         confirmation = self.driver.find_element(By.ID, 'save_exit')
-        confirmation.find_element(By.CSS_SELECTOR, '.close').click()
+        confirmation.find_element(By.ID, 'seClose').click()
         
     def click_on_ok_on_save_and_exit_confirmation(self) -> None:
         confirmation = self.driver.find_element(By.ID, 'save_exit')
-        confirmation.find_element(By.CSS_SELECTOR, '.accept').click()
+        confirmation.find_element(By.ID, 'seAccept').click()
